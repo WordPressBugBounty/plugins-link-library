@@ -1063,8 +1063,23 @@ function RenderLinkLibrary( $LLPluginClass, $generaloptions, $libraryoptions, $s
 				}
 
 				if ( $debugmode ) {
+					foreach ( $link_query_args as $key => $value ) {
+						
+						if ( is_array( $link_query_args[$key] ) ) {
+							foreach ( $link_query_args[$key] as $lower_key => $lower_value ) {
+								if ( is_array( $link_query_args[$key][$lower_key] ) ) {
+									foreach ( $link_query_args[$key][$lower_key] as $lower2_key => $lower2_value ) {
+										$link_query_args[$key][$lower_key][$lower2_key] = esc_html( $lower2_value );
+									}
+								} else {
+									$link_query_args[$key][$lower_key] = esc_html( $lower_value );
+								}								
+							}
+						} else {
+							$link_query_args[$key] = esc_html( $value );
+						}
+					}
 					$output .= "\n<!-- Link Query: " . print_r( $link_query_args, TRUE ) . "-->\n\n";
-					$output .= "\n<!-- Link Results: " . print_r( $the_link_query, TRUE ) . "-->\n\n";
 					$output .= "\n<!-- Link Query Execution Time: " . ( microtime( true ) - $linkquerystarttime ) . "-->\n\n";
 				}
 

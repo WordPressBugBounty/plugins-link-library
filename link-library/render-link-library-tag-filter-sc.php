@@ -55,7 +55,7 @@ function RenderLinkLibraryFilterBox( $LLPluginClass, $generaloptions, $libraryop
 
 		$output .= '</div>';
 
-		$output .= '<input type="hidden" name="link_tags" class="link_tags" value="' . $prev_link_tags . '">';
+		$output .= '<input type="hidden" name="link_tags" class="link_tags" value="' . esc_html( $prev_link_tags ) . '">';
 
 		if ( !$showapplybutton ) {
 			$output .= '<script type="text/javascript">';
