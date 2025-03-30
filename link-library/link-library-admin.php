@@ -618,10 +618,10 @@ class link_library_plugin_admin {
 		$genoptions = wp_parse_args( $genoptions, ll_reset_gen_settings( 'return' ) );
 		extract( $genoptions );
 
-		if ( ( $pagenow == 'post-new.php' && $_GET['post_type'] == 'link_library_links' ) ||
-			 ( $pagenow == 'edit-tags.php' && $_GET['post_type'] == 'link_library_links' && $_GET['taxonomy'] == 'link_library_category' ) ||
-			 ( $pagenow == 'edit-tags.php' && $_GET['post_type'] == 'link_library_links' && $_GET['taxonomy'] == 'link_library_tags' ) ||
-			 ( $pagenow == 'edit.php' && $_GET['post_type'] == 'link_library_links' ) ) {
+		if ( ( $pagenow == 'post-new.php' && isset( $_GET['post_type'] ) && $_GET['post_type'] == 'link_library_links' ) ||
+			 ( $pagenow == 'edit-tags.php' && isset( $_GET['post_type'] ) && $_GET['post_type'] == 'link_library_links' && isset( $_GET['taxonomy'] ) && $_GET['taxonomy'] == 'link_library_category' ) ||
+			 ( $pagenow == 'edit-tags.php' && isset( $_GET['post_type'] ) && $_GET['post_type'] == 'link_library_links' && $_GET['taxonomy'] == 'link_library_tags' ) ||
+			 ( $pagenow == 'edit.php' && isset( $_GET['post_type'] ) && $_GET['post_type'] == 'link_library_links' ) ) {
 			$catnames = get_terms( $genoptions['cattaxonomy'], array( 'hide_empty' => false ) );
 
 			if ( empty( $catnames ) ) {
@@ -7607,7 +7607,7 @@ function general_custom_fields_meta_box( $data ) {
 			<tr>
 				<td><?php _e( 'Telephone', 'link-library' ); ?></td>
 				<td>
-					<input type="text" id="link_telephone" name="link_telephone" style="width:100%" value="<?php echo $link_telephone; ?>" />
+					<input type="text" id="link_telephone" name="link_telephone" style="width:100%" value="<?php echo esc_html( $link_telephone ); ?>" />
 				</td>
 			</tr>
 			<tr>
@@ -7619,8 +7619,8 @@ function general_custom_fields_meta_box( $data ) {
 			<tr>
 				<td><?php _e( 'Reciprocal Link', 'link-library' ); ?></td>
 				<td>
-					<input type="text" id="link_reciprocal" name="link_reciprocal" style="width:100%" value="<?php echo $link_reciprocal; ?>" /> <?php if ( !empty( $link_reciprocal ) ) {
-						echo " <a href=" . esc_url( stripslashes( $link_reciprocal ) ) . ">" . __( 'Visit', 'link-library' ) . "</a>";
+					<input type="text" id="link_reciprocal" name="link_reciprocal" style="width:100%" value="<?php echo esc_html( $link_reciprocal ); ?>" /> <?php if ( !empty( $link_reciprocal ) ) {
+						echo " <a href=" . esc_url( stripslashes( esc_html( $link_reciprocal ) ) ) . ">" . __( 'Visit', 'link-library' ) . "</a>";
 					} ?></td>
 			</tr>
 			<tr>
@@ -7632,19 +7632,19 @@ function general_custom_fields_meta_box( $data ) {
 			<tr>
 				<td><?php _e( 'Submitter', 'link-library' ); ?></td>
 				<td>
-					<input type="text" id="link_submitter" name="link_submitter" style="width:100%" value="<?php echo $link_submitter; ?>" />
+					<input type="text" id="link_submitter" name="link_submitter" style="width:100%" value="<?php echo esc_html(  $link_submitter ); ?>" />
 				</td>
 			</tr>
 			<tr>
 				<td><?php _e( 'Submitter Name', 'link-library' ); ?></td>
 				<td>
-					<input type="text" id="link_submitter_name" name="link_submitter_name" style="width:100%" value="<?php echo $link_submitter_name; ?>" />
+					<input type="text" id="link_submitter_name" name="link_submitter_name" style="width:100%" value="<?php echo esc_html( $link_submitter_name ); ?>" />
 				</td>
 			</tr>
 			<tr>
 				<td><?php _e( 'Submitter E-mail', 'link-library' ); ?></td>
 				<td>
-					<input type="text" id="link_submitter_email" name="link_submitter_email" style="width:100%" value="<?php echo $link_submitter_email; ?>" />
+					<input type="text" id="link_submitter_email" name="link_submitter_email" style="width:100%" value="<?php echo ( $link_submitter_email ); ?>" />
 				</td>
 			</tr>
 			<tr>
@@ -7671,7 +7671,7 @@ function general_custom_fields_meta_box( $data ) {
 			<tr>
 				<td><?php _e( 'Rel Tags', 'link-library' ); ?></td>
 				<td>
-					<input type="text" style="width: 100%" id="link_rel" name="link_rel" value="<?php echo $link_rel; ?>" />
+					<input type="text" style="width: 100%" id="link_rel" name="link_rel" value="<?php echo esc_html( $link_rel ); ?>" />
 				</td>
 			</tr>
 			<tr>

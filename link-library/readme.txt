@@ -3,8 +3,8 @@ Contributors: jackdewey
 Donate link: https://ylefebvre.github.io/wordpress-plugins/link-library/
 Tags: link, list, directory, page, library
 Requires at least: 4.4
-Tested up to: 6.5.3
-Stable tag: 7.7.3
+Tested up to: 6.7.2
+Stable tag: 7.8
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -51,6 +51,11 @@ In addition to specifying a library, categories to be displayed can be specified
 Further configuration is available under the Link Library Settings panel.
 
 == Changelog ==
+
+= 7.8 =
+* Fixed potential security
+* Fixed warning when visiting admin pages about post_type argument missing
+* Fixed warning about deprecation of required parameters after unrequired ones
 
 = 7.7.3 =
 * Fixed potential security issue
