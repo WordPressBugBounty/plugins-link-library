@@ -3,7 +3,7 @@
 Plugin Name: Link Library
 Plugin URI: http://wordpress.org/extend/plugins/link-library/
 Description: Display links on pages with a variety of options
-Version: 7.8.1
+Version: 7.8.2
 Author: Yannick Lefebvre
 Author URI: http://ylefebvre.github.io/
 Text Domain: link-library
@@ -2586,4 +2586,18 @@ if ( !function_exists( 'is_login' ) || ( function_exists( 'is_login' ) && !is_lo
 	}
 }
 
+add_filter('wp_get_object_terms', function($terms, $object_ids, $taxonomies, $args)
+{
+    if ( !$terms && basename( $_SERVER['PHP_SELF'] ) == 'post-new.php' ) {
 
+        // Category - note: only 1 category is supported currently
+        if ( $taxonomies == "'link_library_category'" && isset( $_REQUEST['link_library_cat'] ) ) {			
+            $id = intval( $_REQUEST['link_library_cat'] );
+
+            if ( $id ) {
+                return array( $id );
+            }
+        }
+    }
+    return $terms;
+}, 10, 4);
