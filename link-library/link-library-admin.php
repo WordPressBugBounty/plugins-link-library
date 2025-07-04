@@ -8157,7 +8157,7 @@ function general_custom_fields_meta_box( $data ) {
 
 		if ( $links ) {
 			foreach ( $links as $link ) {
-				echo $link->ID . ' - ' . $link->post_title . ': ' . $link->meta_value . '<br /><br />';
+				echo $link->ID . ' - ' . $link->post_title . ': ' . $link->meta_value . ' - <a href="' . esc_url( add_query_arg( array( 'action' => 'edit', 'post' => $link->ID ), admin_url( 'post.php' ) ) ) . '<br /><br />';
 			}
 		} else {
 			echo 'No duplicate URL links found';
