@@ -8236,6 +8236,10 @@ function wp_dropdown_cats_multiple( $output, $r ) {
 
 function link_library_reciprocal_link_checker() {
 
+	if ( !wp_verify_nonce( '_ajax_nonce' ) || !current_user_can( 'manage_options' ) ) {
+		die();
+	}
+
 	$genoptions = get_option( 'LinkLibraryGeneral' );
 	$genoptions = wp_parse_args( $genoptions, ll_reset_gen_settings( 'return' ) );
 

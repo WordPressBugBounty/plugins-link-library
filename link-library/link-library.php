@@ -3,13 +3,13 @@
 Plugin Name: Link Library
 Plugin URI: https://ylefebvre.github.io/wordpress-plugins/link-library/
 Description: Display links on pages with a variety of options
-Version: 7.8.4
+Version: 7.8.6
 Author: Yannick Lefebvre
 Author URI: http://ylefebvre.github.io/
 Text Domain: link-library
 
 A plugin for the blogging MySQL/PHP-based WordPress.
-Copyright 2025 Yannick Lefebvre
+Copyright 2026 Yannick Lefebvre
 
 Translations:
 French Translation courtesy of Michel G. et Luc Capronnier
