@@ -36,7 +36,7 @@ class link_library_plugin_admin {
 
 		add_filter( 'plugin_row_meta', array( $this, 'set_plugin_row_meta' ), 1, 2 );
 
-		add_action( 'wpmu_new_blog', array( $this, 'new_network_site' ), 10, 6 );
+		add_action( 'wpmu_new_blog', 'new_network_site', 10, 6 );
 
 		add_action( 'admin_head', array( $this, 'admin_header' ) );
 
