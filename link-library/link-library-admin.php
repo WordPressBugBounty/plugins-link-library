@@ -7860,9 +7860,9 @@ function general_custom_fields_meta_box( $data ) {
 				$uploads = wp_upload_dir();
 
 				$pathpos = strpos( $delete_link_url, $uploads['baseurl'] );
-				$filepath = $uploads['basedir'] . substr( $delete_link_url, $pathpos + strlen( $uploads['baseurl'] ) );
+				$filepath = realpath( $uploads['basedir'] . substr( $delete_link_url, $pathpos + strlen( $uploads['baseurl'] ) ) );
 
-				if ( $pathpos !== false ) {
+				if ( $pathpos !== false && strpos( $filepath, $uploads['baseurl'] ) == 0 ) {
 					global $wpdb;
 					$attachment_id = $wpdb->get_col($wpdb->prepare("SELECT ID FROM $wpdb->posts WHERE guid='%s';", $delete_link_url ));
 
