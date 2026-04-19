@@ -8236,7 +8236,7 @@ function wp_dropdown_cats_multiple( $output, $r ) {
 
 function link_library_reciprocal_link_checker() {
 
-	if ( !wp_verify_nonce( '_ajax_nonce' ) || !current_user_can( 'manage_options' ) ) {
+	if ( !wp_verify_nonce( $_POST['_ajax_nonce'], 'link_library_recipbrokencheck' ) || !current_user_can( 'manage_options' ) ) {
 		die();
 	}
 
@@ -8247,6 +8247,8 @@ function link_library_reciprocal_link_checker() {
 	$recipcheckdelete403 = ( isset( $_POST['recipcheckdelete403'] ) && !empty( $_POST['recipcheckdelete403'] ) && 'true' == $_POST['recipcheckdelete403'] ? true : false );
 	$check_type = ( isset( $_POST['mode'] ) && !empty( $_POST['mode'] ) ? sanitize_text_field( $_POST['mode'] ) : 'reciprocal' );
 	$rsscheckdays = ( ( isset( $_POST['rsscheckdays'] ) && !empty( $_POST['rsscheckdays'] ) ) ? intval( $_POST['rsscheckdays'] ) : $genoptions['rsscheckdays'] );
+
+	var_dump( $check_type );
 
 	if ( ! empty( $RecipCheckAddress ) || ( empty( $RecipCheckAddress ) && ( 'reciprocal' != $check_type || 'emptycat' == $check_type ) )  ) {
 		$args = array(

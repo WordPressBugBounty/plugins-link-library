@@ -4,7 +4,7 @@ Donate link: https://ylefebvre.github.io/wordpress-plugins/link-library/
 Tags: link, list, directory, page, library
 Requires at least: 4.4
 Tested up to: 6.9
-Stable tag: 7.8.9
+Stable tag: 7.9.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -51,6 +51,9 @@ In addition to specifying a library, categories to be displayed can be specified
 Further configuration is available under the Link Library Settings panel.
 
 == Changelog ==
+
+= 7.9.0 =
+* Fixed bug with broken link checker
 
 = 7.8.9 =
 * Fixed potential security issue
