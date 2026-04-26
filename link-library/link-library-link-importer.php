@@ -205,7 +205,7 @@ function link_library_import_links( $genoptions, &$row, &$successfulimport, &$su
 					}
 
 					wp_set_post_terms( $new_link_ID, $matched_link_cats, $genoptions['cattaxonomy'] );
-					wp_set_post_terms( $new_link_ID, matched_link_tags , $genoptions['tagtaxonomy'] );
+					wp_set_post_terms( $new_link_ID, $matched_link_tags, $genoptions['tagtaxonomy'] );
 
 					update_post_meta( $new_link_ID, 'link_url', $link_url );
 
