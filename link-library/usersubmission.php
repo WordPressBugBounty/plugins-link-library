@@ -259,18 +259,20 @@ function link_library_process_user_submission( $my_link_library_plugin ) {
 				$existinglinkquery = "SELECT * from " . $my_link_library_plugin->db_prefix() . "posts p, " . $my_link_library_plugin->db_prefix() . "postmeta pm where p.ID = pm.post_ID and pm.meta_key = 'link_url' and ";
 				$existinglinkquery .= '( ';
 
-				$existinglinkquery .= "p.post_title = '" . $captureddata['link_name'] . "' ";
+				$existinglinkquery .= "p.post_title = '%s' ";
 
 				if ( ( $options['addlinknoaddress'] == false ) || ( $options['addlinknoaddress'] == true && $captureddata['link_url'] != "" ) ) {
-					$existinglinkquery .= " or pm.meta_value = '" . $captureddata['link_url'] . "' ";
+					$existinglinkquery .= " or pm.meta_value = '%s' ";
 				}
 
 				if ( $options['onelinkperdomain'] ) {
 					$parsed_url = parse_url( $captureddata['link_url'] );
-					$existinglinkquery .= " or pm.meta_value like '%" . $parsed_url['host'] . "%' ";
+					$existinglinkquery .= " or pm.meta_value like '%%s%' ";
 				}
 
 				$existinglinkquery .= " )";
+
+				$existinglinkquery = $wpdb->prepare( $existinglinkquery, $captureddata['link_name'],  $captureddata['link_url'], $parsed_url['host'] );
 
 				$existinglink = $wpdb->get_var( $existinglinkquery );
 			} elseif ( 'show' == $options['showaddlinkfile'] ) {
