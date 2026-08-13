@@ -442,7 +442,7 @@ function RenderLinkLibrary( &$linkcount, $LLPluginClass, $generaloptions, $libra
 
 		$categoryname = '';
 		if ( isset( $wp_query->query_vars['cat_name'] ) ) {
-			$categoryname = $wp_query->query_vars['cat_name'];
+			$categoryname = sanitize_text_field( $wp_query->query_vars['cat_name'] );
 		}
 
 		$AJAXcatid = $categoryname;

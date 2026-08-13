@@ -3,7 +3,7 @@
 Plugin Name: Link Library
 Plugin URI: https://ylefebvre.github.io/wordpress-plugins/link-library/
 Description: Display links on pages with a variety of options
-Version: 7.9.4
+Version: 7.9.5
 Author: Yannick Lefebvre
 Author URI: http://ylefebvre.github.io/
 Text Domain: link-library
@@ -1079,8 +1079,8 @@ if ( !function_exists( 'is_login' ) || ( function_exists( 'is_login' ) && !is_lo
 
 				if ( !empty( $categoryname ) ) {
 					$linkcatquery .= 't.slug = "' . $categoryname . '"';
-					$nicecatname = $wpdb->get_var( $linkcatquery );
-					return $title . $genoptions['pagetitleprefix'] . $nicecatname . $genoptions['pagetitlesuffix'];
+					$nicecatname = sanitize_text_field( $wpdb->get_var( $linkcatquery ) );
+					return $title . $genoptions['pagetitleprefix'] . esc_html( $nicecatname ) . $genoptions['pagetitlesuffix'];
 				} elseif ( !empty( $catid ) ) {
 					$linkcatquery .= 't.term_id = "' . $catid . '"';
 					$nicecatname = $wpdb->get_var( $linkcatquery );

@@ -42,7 +42,6 @@ class link_library_plugin_admin {
 
 		add_action( 'add_meta_boxes', array( $this, 'll_make_wp_editor_movable' ), 0 );
 		add_action( 'save_post', array( $this, 'll_save_link_fields' ), 10, 2 );
-		add_action( 'before_delete_post', array( $this, 'll_delete_link_fields' ), 10 );
 		add_filter( 'manage_edit-link_library_links_columns', array( $this, 'll_add_columns' ) );
 		add_action( 'manage_link_library_links_posts_custom_column', array( $this, 'll_populate_columns' ) );
 		add_filter( 'manage_edit-link_library_links_sortable_columns', array( $this, 'll_column_sortable' ) );
@@ -7843,35 +7842,6 @@ function general_custom_fields_meta_box( $data ) {
 				if ( isset( $_POST[$array_url_nonce] ) && !empty( $_POST[$array_url_nonce] ) ) {
 					if ( wp_verify_nonce( $_POST['link_edit_nonce'], plugin_basename( __FILE__ ) ) ) {
 						update_post_meta( $link_id, $array_url_nonce, esc_url( $_POST[$array_url_nonce] ) );
-					}
-				}
-			}
-		}
-	}
-
-	function ll_delete_link_fields( $post_id ) {
-		$genoptions = get_option( 'LinkLibraryGeneral' );
-		$genoptions = wp_parse_args( $genoptions, ll_reset_gen_settings( 'return' ) );
-
-		if ( $genoptions['deletelocalfile'] ) {
-			$delete_link_url = get_post_meta( $post_id, 'link_url', true );
-
-			if ( !empty( $delete_link_url ) ) {
-				$uploads = wp_upload_dir();
-
-				$pathpos = strpos( $delete_link_url, $uploads['baseurl'] );
-				$filepath = realpath( $uploads['basedir'] . substr( $delete_link_url, $pathpos + strlen( $uploads['baseurl'] ) ) );
-
-				if ( $pathpos !== false && strpos( $filepath, $uploads['baseurl'] ) == 0 ) {
-					global $wpdb;
-					$attachment_id = $wpdb->get_col($wpdb->prepare("SELECT ID FROM $wpdb->posts WHERE guid='%s';", $delete_link_url ));
-
-					if ( sizeof( $attachment_id ) == 1 ) {
-						if ( !empty( $attachment_id ) ) {
-							wp_delete_attachment( $attachment_id[0], true );
-						}
-					} elseif ( file_exists( $filepath ) ) {
-						$unlinkreturn = unlink( $filepath );
 					}
 				}
 			}
