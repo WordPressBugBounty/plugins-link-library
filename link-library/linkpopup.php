@@ -10,7 +10,7 @@ function link_library_popup_content( $my_link_library_plugin ) {
 
     $link_data = get_post( $link_id );
 
-    if ( !empty( $link_data ) ) {
+    if ( !empty( $link_data ) && 'link_library_links' == $link_data->post_type && 'publish' == $link_data->post_status ) {
         $link_url = get_post_meta( $link_id, 'link_url', true );
         $link_second_url = get_post_meta( $link_id, 'link_second_url', true );
         $link_description = get_post_meta( $link_id, 'link_description', true );
@@ -265,7 +265,7 @@ function link_library_popup_content( $my_link_library_plugin ) {
         }
 
         $postshortcode_popup_text = apply_filters( 'the_content', $popup_text );
-        echo '<div class="linkpopup">' . $postshortcode_popup_text . '</div>';
+        echo '<div class="linkpopup">' . esc_html( $postshortcode_popup_text ) . '</div>';
 
         $xpath = $my_link_library_plugin->relativePath( dirname( __FILE__ ), ABSPATH );
 
@@ -282,9 +282,8 @@ function link_library_popup_content( $my_link_library_plugin ) {
         $track_code .= "});\n";
         $track_code .= "</script>";
 
-        echo $track_code;
+        echo esc_html( $track_code );
     }
-
 
     exit;
 }

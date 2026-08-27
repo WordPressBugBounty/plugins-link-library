@@ -7811,7 +7811,7 @@ function general_custom_fields_meta_box( $data ) {
 			$array_direct_items = array( 'link_target' );
 			foreach ( $array_direct_items as $array_direct_item ) {
 				if ( isset( $_POST[$array_direct_item] ) ) {
-					update_post_meta( $link_id, $array_direct_item, $_POST[$array_direct_item] );
+					update_post_meta( $link_id, $array_direct_item, sanitize_text_field( $_POST[$array_direct_item] ) );
 				}
 			}
 

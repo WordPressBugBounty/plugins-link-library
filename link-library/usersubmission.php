@@ -11,6 +11,22 @@ function link_library_process_user_submission( $my_link_library_plugin ) {
 	load_plugin_textdomain( 'link-library', false, dirname( plugin_basename( __FILE__ ) ) . '/languages' );
 
 	$settings     = ( isset( $_POST['settingsid'] ) ? $_POST['settingsid'] : 1 );
+
+	if ( is_numeric( $settings ) ) {
+		$settings = intval( settings );
+		$settingsname = 'LinkLibraryPP' . $settings;
+		$options = get_option( $settingsname );
+		if ( false === $options ) {
+			$settings = 1;
+		}
+	} else {
+		$settings = 1;
+	}
+
+	if ( $settings > $genoptions['numberstylesets'] ) {
+		$settings = 1;
+	}
+
 	$settingsname = 'LinkLibraryPP' . $settings;
 	$options      = get_option( $settingsname );
 	$options = wp_parse_args( $options, ll_reset_options( 1, 'list', 'return' ) );
@@ -79,12 +95,12 @@ function link_library_process_user_submission( $my_link_library_plugin ) {
 
 	$uploads = wp_upload_dir();
 
-	if ( isset( $_FILES['linkimage']['name'] ) ) {
+	if ( ( 'show' == $options['showaddlinkimage'] || 'required' == $options['showaddlinkimage'] ) && isset( $_FILES['linkimage']['name'] ) ) {
 		$image_file_ext = strtolower( end( explode( '.', $_FILES['linkimage']['name'] ) ) );
 		$allowed_image_extensions = array( 'jpeg', 'jpg', 'png' );
 	}
 
-	if ( isset( $_FILES['linkfile']['name'] ) ) {
+	if ( 'show' == $options['showaddlinkfile'] && isset( $_FILES['linkfile']['name'] ) ) {
 		$link_file_ext = strtolower( end( explode( '.', $_FILES['linkfile']['name'] ) ) );
 		$allowed_link_file_extensions = explode( ',', $options['linkfileallowedtypes'] );
 	}

@@ -11,7 +11,7 @@ function link_library_add_http( $url ) {
 	if ( !preg_match( '~^(?:f|ht)tps?://~i', $url ) ) {
 		$url = 'http://' . $url;
 	}
-	return $url;
+	return esc_url( $url );
 }
 
 function link_library_highlight_phrase( $str, $phrase, $tag_open = '<strong>', $tag_close = '</strong>' ) {
@@ -75,7 +75,7 @@ function link_library_get_breadcrumb_path( $slug, $rewritepage, $rewritecategori
 		}
 	}
 
-	$new_link = esc_url( home_url() . '/' . $rewritepage . '/' . $slug );
+	$new_link = home_url() . '/' . $rewritepage . '/' . $slug;
 	if ( isset( $_GET['link_tags'] ) && !empty( $_GET['link_tags'] ) ) {
 		$new_link = add_query_arg( 'link_tags', sanitize_text_field( $_GET['link_tags'] ), $new_link );
 	}
@@ -85,10 +85,10 @@ function link_library_get_breadcrumb_path( $slug, $rewritepage, $rewritecategori
 	}
 
 	if ( $level != 0 ) {
-		$cat_path .= '<a href="' . $new_link . '">' . $term->name . '</a>';		
+		$cat_path .= '<a href="' . esc_url( $new_link ) . '">' . $term->name . '</a>';		
 	} elseif ( $level == 0 ) {
 		$cat_path .= $term->name;
-		$new_top_link = esc_url( home_url() . '/' . $rewritecategoriespage . '/' );
+		$new_top_link = home_url() . '/' . $rewritecategoriespage . '/';
 
 		if ( isset( $_GET['link_tags'] ) && !empty( $_GET['link_tags'] ) ) {
 			$new_top_link = add_query_arg( 'link_tags', sanitize_text_field( $_GET['link_tags'] ), $new_top_link );
@@ -97,10 +97,10 @@ function link_library_get_breadcrumb_path( $slug, $rewritepage, $rewritecategori
 			$new_top_link = add_query_arg( 'link_price', sanitize_text_field( $_GET['link_price'] ), $new_top_link );
 		}
 
-		$cat_path = '<a href="' . $new_top_link .  '">Home</a> - ' . $cat_path;
+		$cat_path = '<a href="' . esc_url( $new_top_link ) .  '">Home</a> - ' . $cat_path;
 	}
 
-	return $cat_path;
+	return esc_html( $cat_path );
 }
 
 function link_library_display_pagination( $previouspagenumber, $nextpagenumber, $numberofpages, $pagenumber,
@@ -297,7 +297,7 @@ function link_library_display_pagination( $previouspagenumber, $nextpagenumber, 
 		$paginationoutput .= "</script>\n\n";
 	}
 
-	return $paginationoutput;
+	return esc_html( $paginationoutput );
 }
 
 /**
@@ -1467,7 +1467,7 @@ function RenderLinkLibrary( &$linkcount, $LLPluginClass, $generaloptions, $libra
 													$sort_url = add_query_arg( 'link_price', sanitize_text_field( $_GET['link_price'] ), $sort_url );
 												}
 
-												$catstartlist .= '<a href="' . $sort_url . '">';
+												$catstartlist .= '<a href="' . esc_url( $sort_url ) . '">';
 											}
 
 											$catstartlist .= $column_label;
@@ -1912,11 +1912,11 @@ function RenderLinkLibrary( &$linkcount, $LLPluginClass, $generaloptions, $libra
 
 																if ( !$enable_link_popup ) {
 																	if ( 'primary' == $sourceimage || empty( $sourceimage ) ) {
-																		$imageoutput .= $the_link;
+																		$imageoutput .= esc_url( $the_link );
 																	} elseif ( 'secondary' == $sourceimage ) {
-																		$imageoutput .= $the_second_link;
+																		$imageoutput .= esc_url( $the_second_link );
 																	} elseif ( 'permalink' == $sourceimage ) {
-																		$imageoutput .= $the_permalink;
+																		$imageoutput .= esc_url( $the_permalink );
 																	}
 																} else {
 																	$imageoutput .= admin_url( 'admin-ajax.php' . '?action=link_library_popup_content&linkid=' . $linkitem['proper_link_id'] . '&settings=' . $settings . '&height=' . ( empty( $popup_height ) ? 300 : $popup_height ) . '&width=' . ( empty( $popup_width ) ? 400 : $popup_width ) . '&xpath=' . $xpath );
