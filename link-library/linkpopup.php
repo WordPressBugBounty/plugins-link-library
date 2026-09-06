@@ -4,6 +4,7 @@ function link_library_popup_content( $my_link_library_plugin ) {
     if ( isset( $_GET['linkid'] ) && isset( $_GET['settings'] ) ) {
         $link_id = intval( $_GET['linkid'] );
         $settings_id = intval( $_GET['settings'] );
+	    $settings_id = link_library_validate_settings_number( $settings_id );
     } else {
         wp_die();
     }
@@ -11,6 +12,25 @@ function link_library_popup_content( $my_link_library_plugin ) {
     $link_data = get_post( $link_id );
 
     if ( !empty( $link_data ) && 'link_library_links' == $link_data->post_type && 'publish' == $link_data->post_status ) {
+        $options = get_option( 'LinkLibraryPP' . $settings_id );
+	    $generaloptions = get_option( 'LinkLibraryGeneral' );
+	    $generaloptions = wp_parse_args( $generaloptions, ll_reset_gen_settings( 'return' ) );
+
+        $link_categories = wp_get_post_terms( get_the_ID(), $generaloptions['cattaxonomy'] );
+
+        if ( !empty( $options['categorylist_cpt'] ) ) {
+            $link_categories_to_display_array = explode( ',', $options['categorylist_cpt'] );
+
+            $link_categories_id_array = [];
+            foreach ( $link_categories as $link_category ) {
+                $link_categories_id_array[] = $link_category->term_id;
+            }
+
+            if ( empty( array_intersect( $link_categories_id_array, $link_categories_to_display_array ) ) ) {
+                wp_die();
+            }
+        }
+
         $link_url = get_post_meta( $link_id, 'link_url', true );
         $link_second_url = get_post_meta( $link_id, 'link_second_url', true );
         $link_description = get_post_meta( $link_id, 'link_description', true );
@@ -46,10 +66,6 @@ function link_library_popup_content( $my_link_library_plugin ) {
 
         if ('' != $title)
             $title = ' title="' . $title . '"';
-
-        $options = get_option( 'LinkLibraryPP' . $settings_id );
-	    $generaloptions = get_option( 'LinkLibraryGeneral' );
-	    $generaloptions = wp_parse_args( $generaloptions, ll_reset_gen_settings( 'return' ) );
 
         $rel = '';
         if ( ( $options['nofollow'] || $link_no_follow ) ) {
@@ -101,7 +117,7 @@ function link_library_popup_content( $my_link_library_plugin ) {
             } elseif ( strpos( $link_image, 'http' ) !== false ) {
                 $imageoutput .= '<img src="' . $link_image . '"';
             } else {
-                $imageoutput .= '<img src="' . get_option('siteurl') . $link_image . '"';
+                $imageoutput .= '<img src="' . get_option( 'siteurl' ) . $link_image . '"';
             }
 
             $imageoutput .= $alt . $title;
@@ -150,7 +166,6 @@ function link_library_popup_content( $my_link_library_plugin ) {
         }
 
         $link_cat_names = '';
-        $link_categories = wp_get_post_terms( get_the_ID(), $generaloptions['cattaxonomy'] );
         if ( $link_categories ) {
             $countcats = 0;
             foreach ( $link_categories as $link_category ) {

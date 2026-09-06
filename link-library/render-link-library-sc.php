@@ -100,7 +100,7 @@ function link_library_get_breadcrumb_path( $slug, $rewritepage, $rewritecategori
 		$cat_path = '<a href="' . esc_url( $new_top_link ) .  '">Home</a> - ' . $cat_path;
 	}
 
-	return esc_html( $cat_path );
+	return $cat_path;
 }
 
 function link_library_display_pagination( $previouspagenumber, $nextpagenumber, $numberofpages, $pagenumber,
@@ -297,7 +297,7 @@ function link_library_display_pagination( $previouspagenumber, $nextpagenumber, 
 		$paginationoutput .= "</script>\n\n";
 	}
 
-	return esc_html( $paginationoutput );
+	return $paginationoutput;
 }
 
 /**

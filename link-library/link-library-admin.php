@@ -879,6 +879,7 @@ wp_editor( $post->post_content, 'content', $editor_config );
 		global $screen_layout_columns;
 
 		$settings = ( isset( $_GET['settings'] ) ? intval( $_GET['settings'] ) : 1 );
+		$settings = link_library_validate_settings_number( $settings );
 
 		if ( isset( $_GET['settingscopy'] ) ) {
 			check_admin_referer( 'llsettingscopy' );
@@ -886,6 +887,7 @@ wp_editor( $post->post_content, 'content', $editor_config );
 			if ( isset( $_GET['settingscopy'] ) && isset( $_GET['source'] ) ) {
 				$destination = intval( $_GET['settingscopy'] );
 				$source      = intval( $_GET['source'] );
+				$source = link_library_validate_settings_number( $source );
 	
 				$sourcesettingsname = 'LinkLibraryPP' . $source;
 				$sourceoptions      = get_option( $sourcesettingsname );
@@ -2286,7 +2288,12 @@ wp_editor( $post->post_content, 'content', $editor_config );
 				$myFile = $upload_dir['path'] . "/SettingSet" . $_POST['settingsetid'] . "Export.csv";
 				$fh = fopen( $myFile, 'w' ) or die( "can't open file" );
 
-				$sourcesettingsname = 'LinkLibraryPP' . $_POST['settingsetid'];
+				if ( isset( $_POST['settingsetid'] ) && !empty( $_POST['settingsetid'] ) ) {
+					$settingsetid = link_library_validate_settings_number( $_POST['settingsetid'] );
+				} else {
+					$settingsetid = 1;
+				}
+				$sourcesettingsname = 'LinkLibraryPP' . $settingsetid;
 				$sourceoptions      = get_option( $sourcesettingsname );
 
 				$headerrow = array();
@@ -2356,8 +2363,9 @@ wp_editor( $post->post_content, 'content', $editor_config );
 				$messages[] = '8';
 			}
 		} else {
-			$settingsetid = $_POST['settingsetid'];
-			$settings     = $_POST['settingsetid'];
+			$settings = $_POST['settingsetid'];
+			$settings = link_library_validate_settings_number( $settings );
+			$settingsetid = $settings;
 
 			$settingsname = 'LinkLibraryPP' . $settingsetid;
 

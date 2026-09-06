@@ -98,19 +98,8 @@ function link_library_link_submission_popup_form( $LLPluginClass ) {
 
 	if ( empty( $_GET['settings'] ) ) {
 		$settings = 1;
-	} elseif ( isset( $_GET['settings'] ) && is_numeric( $_GET['settings'] ) ) {
-		$settings = intval( $_GET['settings'] );
-		$settingsname = 'LinkLibraryPP' . $settings;
-		$options = get_option( $settingsname );
-		if ( false === $options ) {
-			$settings = 1;
-		}
 	} else {
-		$settings = 1;
-	}
-
-	if ( $settings > $genoptions['numberstylesets'] ) {
-		$settings = 1;
+		$settings = link_library_validate_settings_number( $_GET['settings'] );
 	}
 
 	$settingsname = 'LinkLibraryPP' . $settings;
