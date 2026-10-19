@@ -5,6 +5,10 @@ function link_library_popup_content( $my_link_library_plugin ) {
         $link_id = intval( $_GET['linkid'] );
         $settings_id = intval( $_GET['settings'] );
 	    $settings_id = link_library_validate_settings_number( $settings_id );
+
+        if ( !wp_verify_nonce( $_GET['settingsnonce'], 'll_popup_setting_' . $settings_id . '_linkid_' . $link_id ) ) {
+             wp_die();
+        }
     } else {
         wp_die();
     }
@@ -18,15 +22,23 @@ function link_library_popup_content( $my_link_library_plugin ) {
 
         $link_categories = wp_get_post_terms( get_the_ID(), $generaloptions['cattaxonomy'] );
 
+        $link_categories_id_array = [];
+        foreach ( $link_categories as $link_category ) {
+            $link_categories_id_array[] = $link_category->term_id;
+        }
+
         if ( !empty( $options['categorylist_cpt'] ) ) {
             $link_categories_to_display_array = explode( ',', $options['categorylist_cpt'] );
 
-            $link_categories_id_array = [];
-            foreach ( $link_categories as $link_category ) {
-                $link_categories_id_array[] = $link_category->term_id;
-            }
-
             if ( empty( array_intersect( $link_categories_id_array, $link_categories_to_display_array ) ) ) {
+                wp_die();
+            }
+        }
+
+        if ( !empty( $options['excludecategorylist_cpt'] ) ) {
+            $link_categories_not_to_display_array = explode( ',', $options['excludecategorylist_cpt'] );
+
+            if ( array_intersect( $link_categories_id_array, $link_categories_not_to_display_array ) ) {
                 wp_die();
             }
         }
@@ -264,17 +276,17 @@ function link_library_popup_content( $my_link_library_plugin ) {
         }
 
         if ( ( strpos ( $popup_text, '%link_rating%' ) !== false ) && !empty( $link_rating ) ) {
-            $linksubmitter = stripslashes( $link_rating );
+            $linkrating = stripslashes( $link_rating );
 
-            $popup_text = str_replace( '%link_rating%', $linksubmitter, $popup_text );
+            $popup_text = str_replace( '%link_rating%', $linkrating, $popup_text );
         } elseif ( ( strpos( $popup_text, '%link_rating%' ) !== false ) && empty( $link_rating ) ) {
             $popup_text = str_replace( '%link_rating%', '', $popup_text );
         }
 
         if ( ( strpos ( $popup_text, '%link_rss%' ) !== false ) && !empty( $link_rss ) ) {
-            $linksubmitter = stripslashes( $link_rss );
+            $linkrss = stripslashes( $link_rss );
 
-            $popup_text = str_replace( '%link_rss%', $linksubmitter, $popup_text );
+            $popup_text = str_replace( '%link_rss%', $linkrss, $popup_text );
         } elseif ( ( strpos( $popup_text, '%link_rss%' ) !== false ) && empty( $link_rss ) ) {
             $popup_text = str_replace( '%link_rss%', '', $popup_text );
         }

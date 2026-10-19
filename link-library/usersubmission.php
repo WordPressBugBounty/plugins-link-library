@@ -24,6 +24,10 @@ function link_library_process_user_submission( $my_link_library_plugin ) {
 	$requiredcheck = true;
 	$message = "";
 
+	if ( $options['addlinkreqlogin'] && !current_user_can( 'read' ) ) {
+		wp_die( 'Link submission required login but submission data indicates that the user is not logged in.' );
+	}
+
 	$captureddata                           = array();
 	if ( isset( $_POST['link_category'] ) ) {
 		$cleancatarray = array();
@@ -495,17 +499,17 @@ function link_library_process_user_submission( $my_link_library_plugin ) {
 						update_post_meta( $new_link_ID, 'link_custom_url_4', esc_url( $captureddata['ll_customurl4'] ) );
 						update_post_meta( $new_link_ID, 'link_custom_url_5', esc_url( $captureddata['ll_customurl5'] ) );	
 						
-						update_post_meta( $new_link_ID, 'link_custom_text_1', sanitize_text_field( $captureddata['ll_customtext1'] ) );
-						update_post_meta( $new_link_ID, 'link_custom_text_2', sanitize_text_field( $captureddata['ll_customtext2'] ) );
-						update_post_meta( $new_link_ID, 'link_custom_text_3', sanitize_text_field( $captureddata['ll_customtext3'] ) );
-						update_post_meta( $new_link_ID, 'link_custom_text_4', sanitize_text_field( $captureddata['ll_customtext4'] ) );
-						update_post_meta( $new_link_ID, 'link_custom_text_5', sanitize_text_field( $captureddata['ll_customtext5'] ) );	
+						update_post_meta( $new_link_ID, 'link_custom_text_1', wp_kses_post( sanitize_text_field( $captureddata['ll_customtext1'] ) ) );
+						update_post_meta( $new_link_ID, 'link_custom_text_2', wp_kses_post( sanitize_text_field( $captureddata['ll_customtext2'] ) ) );
+						update_post_meta( $new_link_ID, 'link_custom_text_3', wp_kses_post( sanitize_text_field( $captureddata['ll_customtext3'] ) ) );
+						update_post_meta( $new_link_ID, 'link_custom_text_4', wp_kses_post( sanitize_text_field( $captureddata['ll_customtext4'] ) ) );
+						update_post_meta( $new_link_ID, 'link_custom_text_5', wp_kses_post( sanitize_text_field( $captureddata['ll_customtext5'] ) ) );	
 
-						update_post_meta( $new_link_ID, 'link_custom_list_1', sanitize_text_field( $captureddata['ll_customlist1'] ) );
-						update_post_meta( $new_link_ID, 'link_custom_list_2', sanitize_text_field( $captureddata['ll_customlist2'] ) );
-						update_post_meta( $new_link_ID, 'link_custom_list_3', sanitize_text_field( $captureddata['ll_customlist3'] ) );
-						update_post_meta( $new_link_ID, 'link_custom_list_4', sanitize_text_field( $captureddata['ll_customlist4'] ) );
-						update_post_meta( $new_link_ID, 'link_custom_list_5', sanitize_text_field( $captureddata['ll_customlist5'] ) );	
+						update_post_meta( $new_link_ID, 'link_custom_list_1', wp_kses_post( sanitize_text_field( $captureddata['ll_customlist1'] ) ) );
+						update_post_meta( $new_link_ID, 'link_custom_list_2', wp_kses_post( sanitize_text_field( $captureddata['ll_customlist2'] ) ) );
+						update_post_meta( $new_link_ID, 'link_custom_list_3', wp_kses_post( sanitize_text_field( $captureddata['ll_customlist3'] ) ) );
+						update_post_meta( $new_link_ID, 'link_custom_list_4', wp_kses_post( sanitize_text_field( $captureddata['ll_customlist4'] ) ) );
+						update_post_meta( $new_link_ID, 'link_custom_list_5', wp_kses_post( sanitize_text_field( $captureddata['ll_customlist5'] ) ) );	
 
 						update_post_meta( $new_link_ID, 'link_visits', 0 );
 						update_post_meta( $new_link_ID, 'link_rating', 0 );

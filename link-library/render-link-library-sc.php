@@ -1919,7 +1919,7 @@ function RenderLinkLibrary( &$linkcount, $LLPluginClass, $generaloptions, $libra
 																		$imageoutput .= esc_url( $the_permalink );
 																	}
 																} else {
-																	$imageoutput .= admin_url( 'admin-ajax.php' . '?action=link_library_popup_content&linkid=' . $linkitem['proper_link_id'] . '&settings=' . $settings . '&height=' . ( empty( $popup_height ) ? 300 : $popup_height ) . '&width=' . ( empty( $popup_width ) ? 400 : $popup_width ) . '&xpath=' . $xpath );
+																	$imageoutput .= admin_url( 'admin-ajax.php' . '?action=link_library_popup_content&linkid=' . $linkitem['proper_link_id'] . '&settings=' . $settings . '&height=' . ( empty( $popup_height ) ? 300 : $popup_height ) . '&width=' . ( empty( $popup_width ) ? 400 : $popup_width ) . '&xpath=' . $xpath . '&settingsnonce=' . wp_create_nonce( 'll_popup_setting_' . $settings . '_linkid_' . $linkitem['proper_link_id'] ) );
 																}
 
 																$imageoutput .= '" id="link-' . $linkitem['proper_link_id'] . '" class="' . ( $enable_link_popup ? 'thickbox' : 'track_this_link' ) . ' ' . ( $linkitem['link_featured'] ? 'featured' : '' ). '" ' . $linkitem['link_rel'] . $title . $target. '>';
@@ -2014,7 +2014,7 @@ function RenderLinkLibrary( &$linkcount, $LLPluginClass, $generaloptions, $libra
 																	$current_cat_output .= $the_permalink;
 																}
 															} else {
-																$current_cat_output .= admin_url( 'admin-ajax.php' . '?action=link_library_popup_content&linkid=' . $linkitem['proper_link_id'] . '&settings=' . $settings . '&height=' . ( empty( $popup_height ) ? 300 : $popup_height ) . '&width=' . ( empty( $popup_width ) ? 400 : $popup_width ) . '&xpath=' . $xpath );
+																$current_cat_output .= admin_url( 'admin-ajax.php' . '?action=link_library_popup_content&linkid=' . $linkitem['proper_link_id'] . '&settings=' . $settings . '&height=' . ( empty( $popup_height ) ? 300 : $popup_height ) . '&width=' . ( empty( $popup_width ) ? 400 : $popup_width ) . '&xpath=' . $xpath . '&settingsnonce=' . wp_create_nonce( 'll_popup_setting_' . $settings . '_linkid_' . $linkitem['proper_link_id'] ) );
 															}
 
 															if ( 'description' == $tooltipname && !empty( $desc ) ) {

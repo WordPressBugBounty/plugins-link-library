@@ -879,7 +879,6 @@ wp_editor( $post->post_content, 'content', $editor_config );
 		global $screen_layout_columns;
 
 		$settings = ( isset( $_GET['settings'] ) ? intval( $_GET['settings'] ) : 1 );
-		$settings = link_library_validate_settings_number( $settings );
 
 		if ( isset( $_GET['settingscopy'] ) ) {
 			check_admin_referer( 'llsettingscopy' );
@@ -898,6 +897,8 @@ wp_editor( $post->post_content, 'content', $editor_config );
 				$settings = $destination;
 			}			
 		}
+
+		$settings = link_library_validate_settings_number( $settings, true );
 
 		if ( isset( $_GET['deletesettings'] ) ) {
 			check_admin_referer( 'link-library-delete' );
@@ -2364,7 +2365,7 @@ wp_editor( $post->post_content, 'content', $editor_config );
 			}
 		} else {
 			$settings = $_POST['settingsetid'];
-			$settings = link_library_validate_settings_number( $settings );
+			$settings = link_library_validate_settings_number( $settings, true );
 			$settingsetid = $settings;
 
 			$settingsname = 'LinkLibraryPP' . $settingsetid;
@@ -7584,16 +7585,16 @@ function general_custom_fields_meta_box( $data ) {
 					if ( $genoptions['customurl' . $customurlfieldnumber . 'active'] ) {
 						$valuefield = 'link_custom_url_' . $customurlfieldnumber; ?>
 				<tr>
-					<td style="width:200px"><?php echo $genoptions['customurl' . $customurlfieldnumber . 'label']; ?></td>
-					<td><input type="text" name="link_custom_url_<?php echo $customurlfieldnumber; ?>" style="width:100%" value="<?php echo $$valuefield; ?>"></td>
+					<td style="width:200px"><?php echo esc_html( $genoptions['customurl' . $customurlfieldnumber . 'label'] ); ?></td>
+					<td><input type="text" name="link_custom_url_<?php echo $customurlfieldnumber; ?>" style="width:100%" value="<?php echo esc_attr( $$valuefield ); ?>"></td>
 				</tr>
 			<?php } } ?>
 			<?php for ( $customtextfieldnumber = 1; $customtextfieldnumber < 6; $customtextfieldnumber++ ) {
 				if ( $genoptions['customtext' . $customtextfieldnumber . 'active'] ) {
 					$valuefield = 'link_custom_text_' . $customtextfieldnumber; ?>
 					<tr>
-						<td style="width:200px"><?php echo $genoptions['customtext' . $customtextfieldnumber . 'label']; ?></td>
-						<td><input type="text" name="link_custom_text_<?php echo $customtextfieldnumber; ?>" style="width:100%" value="<?php echo $$valuefield; ?>"></td>
+						<td style="width:200px"><?php echo esc_html( $genoptions['customtext' . $customtextfieldnumber . 'label'] ); ?></td>
+						<td><input type="text" name="link_custom_text_<?php echo $customtextfieldnumber; ?>" style="width:100%" value="<?php echo esc_attr( $$valuefield ); ?>"></td>
 					</tr>
 				<?php } } ?>
 			<?php for ( $customlistfieldnumber = 1; $customlistfieldnumber < 6; $customlistfieldnumber++ ) {
@@ -7602,13 +7603,13 @@ function general_custom_fields_meta_box( $data ) {
 					$list_values = explode( ',', $genoptions['customlist' . $customlistfieldnumber . 'values'] );
 					?>
 					<tr>
-						<td style="width:200px"><?php echo $genoptions['customlist' . $customlistfieldnumber . 'label']; ?></td>
+						<td style="width:200px"><?php echo esc_html( $genoptions['customlist' . $customlistfieldnumber . 'label'] ); ?></td>
 						<td>
 							<?php if ( !empty( $list_values ) ) { ?>
 								<select name="link_custom_list_<?php echo $customlistfieldnumber; ?>">
 									<option value=""><?php _e( 'Select an option', 'link-library' ); ?></option>
 								<?php foreach ( $list_values as $index => $list_value ) { ?>
-									<option <?php selected( $index, $$valuefield ); ?> value="<?php echo $index; ?>"><?php echo $list_value; ?></option>
+									<option <?php selected( $index, $$valuefield ); ?> value="<?php echo esc_attr( $index ); ?>"><?php echo esc_html( $list_value ); ?></option>
 								<?php } ?>
 								</select>
 							<?php } ?>

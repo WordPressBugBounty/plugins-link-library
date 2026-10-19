@@ -3,7 +3,7 @@
 Plugin Name: Link Library
 Plugin URI: https://ylefebvre.github.io/wordpress-plugins/link-library/
 Description: Display links on pages with a variety of options
-Version: 7.9.7
+Version: 7.10.0
 Author: Yannick Lefebvre
 Author URI: http://ylefebvre.github.io/
 Text Domain: link-library
@@ -49,12 +49,12 @@ if ( !function_exists( 'is_login' ) || ( function_exists( 'is_login' ) && !is_lo
 	global $my_link_library_plugin;
 	global $my_link_library_plugin_admin;
 
-	function link_library_validate_settings_number( $settings ) {
+	function link_library_validate_settings_number( $settings, $admin = false ) {
 		if ( is_numeric( $settings ) ) {
 			$settings = intval( $settings );
 			$settingsname = 'LinkLibraryPP' . $settings;
 			$options = get_option( $settingsname );
-			if ( false === $options ) {
+			if ( false === $options && !$admin ) {
 				$settings = 1;
 			}
 		} else {
@@ -1101,12 +1101,14 @@ if ( !function_exists( 'is_login' ) || ( function_exists( 'is_login' ) && !is_lo
 				$linkcatquery .= 'WHERE tt.taxonomy = "link_category" AND ';
 
 				if ( !empty( $categoryname ) ) {
-					$linkcatquery .= 't.slug = "' . $categoryname . '"';
-					$nicecatname = sanitize_text_field( $wpdb->get_var( $linkcatquery ) );
+					$linkcatquery .= 't.slug = "%s"';
+					$preplinkcatquery = $wpdb->prepare( $linkcatquery, $categoryname );
+					$nicecatname = sanitize_text_field( $wpdb->get_var( $preplinkcatquery ) );
 					return $title . $genoptions['pagetitleprefix'] . esc_html( $nicecatname ) . $genoptions['pagetitlesuffix'];
 				} elseif ( !empty( $catid ) ) {
-					$linkcatquery .= 't.term_id = "' . $catid . '"';
-					$nicecatname = $wpdb->get_var( $linkcatquery );
+					$linkcatquery .= 't.term_id = "%d"';
+					$preplinkcatquery = $wpdb->prepare( $linkcatquery, $catid );
+					$nicecatname = $wpdb->get_var( $preplinkcatquery );
 					return $title . $genoptions['pagetitleprefix'] . $nicecatname . $genoptions['pagetitlesuffix'];
 				}
 			}
