@@ -1817,21 +1817,9 @@ function RenderLinkLibrary( &$linkcount, $LLPluginClass, $generaloptions, $libra
 
 								$linkitem['link_textfield'] = do_shortcode( $linkitem['link_textfield'] );
 
-								if ( $use_html_tags ) {
-									$descnotes = $linkitem['link_notes'];
-									$descnotes = str_replace( '[', '<', $descnotes );
-									$descnotes = str_replace( ']', '>', $descnotes );
-									$desc = $linkitem['link_description'];
-									$desc = str_replace("[", "<", $desc);
-									$desc = str_replace("]", ">", $desc);
-									$textfield = stripslashes( $linkitem['link_textfield'] );
-									$textfield = str_replace( '[', '<', $textfield );
-									$textfield = str_replace( ']', '>', $textfield );
-								} else {
-									$descnotes = esc_html( $linkitem['link_notes'], ENT_QUOTES );
-									$desc = esc_html($linkitem['link_description'], ENT_QUOTES);
-									$textfield = stripslashes( $linkitem['link_textfield'] );
-								}
+								$descnotes = esc_html( $linkitem['link_notes'], ENT_QUOTES );
+								$desc = esc_html($linkitem['link_description'], ENT_QUOTES);
+								$textfield = stripslashes( $linkitem['link_textfield'] );
 
 								$cleandesc = $desc;
 								$cleanname = esc_html( $linkitem['link_name'], ENT_QUOTES );

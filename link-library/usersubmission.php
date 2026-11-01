@@ -140,7 +140,7 @@ function link_library_process_user_submission( $my_link_library_plugin ) {
 	} else if ( isset( $_FILES['linkfile'] ) && file_exists( $_FILES['linkfile']['tmp_name'] ) && !in_array( $link_file_ext, $allowed_link_file_extensions ) ) {
 		$requiredcheck = false;
 		$message = 28;
-	} elseif ( isset( $_FILES['linkfile'] ) && file_exists( $_FILES['linkfile']['tmp_name'] ) && file_exists( $uploads['basedir'] . '/link-library-files/' . $_FILES['linkfile']['name'] ) ) {
+	} elseif ( isset( $_FILES['linkfile'] ) && file_exists( $_FILES['linkfile']['tmp_name'] ) && file_exists( $uploads['basedir'] . '/link-library-files/' . sanitize_file_name( $_FILES['linkfile']['name'] ) ) ) {
 		$requiredcheck = false;
 		$message = 29;
 	}
@@ -472,9 +472,9 @@ function link_library_process_user_submission( $my_link_library_plugin ) {
 										mkdir( $uploads['basedir'] . '/link-library-files' );
 									}
 
-									$target_link_file_name = $uploads['basedir'] . '/link-library-files/' . $_FILES['linkfile']['name'];
-									$target_link_file_url = $uploads['baseurl'] . '/link-library-files/' . $_FILES['linkfile']['name'];
-									move_uploaded_file( $_FILES['linkfile']['tmp_name'], $target_link_file_name );
+									$target_link_file_name = $uploads['basedir'] . '/link-library-files/' . sanitize_file_name( $_FILES['linkfile']['name'] );
+									$target_link_file_url = $uploads['baseurl'] . '/link-library-files/' . sanitize_file_name( $_FILES['linkfile']['name'] );
+									move_uploaded_file( sanitize_file_name( $_FILES['linkfile']['tmp_name'] ), $target_link_file_name );
 									update_post_meta( $new_link_ID, 'link_url', $target_link_file_url );
 								}
 							}

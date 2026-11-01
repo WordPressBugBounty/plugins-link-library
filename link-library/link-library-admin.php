@@ -2509,7 +2509,7 @@ wp_editor( $post->post_content, 'content', $editor_config );
 			foreach (
 				array(
 					'hide_if_empty', 'catanchor', 'showdescription', 'shownotes', 'showrating', 'showupdated', 'show_images',
-					'use_html_tags', 'show_rss', 'nofollow', 'showcolumnheaders', 'show_rss_icon', 'showcategorydescheaders',
+					'show_rss', 'nofollow', 'showcolumnheaders', 'show_rss_icon', 'showcategorydescheaders',
 					'showcategorydesclinks', 'showadmineditlinks', 'showonecatonly', 'rsspreview', 'rssfeedinline', 'rssfeedinlinecontent',
 					'pagination', 'hidecategorynames', 'showinvisible', 'showdate', 'showuserlinks', 'emailnewlink', 'usethumbshotsforimages', 'uselocalimagesoverthumbshots',
 					'addlinkreqlogin', 'showcatlinkcount', 'publishrssfeed', 'showname', 'enablerewrite', 'storelinksubmitter', 'showlinkhits', 'showcaptcha',
@@ -5835,14 +5835,6 @@ function general_custom_fields_meta_box( $data ) {
 		</table>
 		<br />
 		<table>
-			<tr>
-				<td>
-					<?php _e( 'Convert [] to &lt;&gt; in Link Description and Notes', 'link-library' ); ?>
-				</td>
-				<td style='width:75px;padding:0px 20px 0px 20px'>
-					<input type="checkbox" id="use_html_tags" name="use_html_tags" <?php checked( $options['use_html_tags'] ); ?>/>
-				</td>
-			</tr>
 			<tr>
 				<td>
 					<?php _e( 'Add nofollow tag to outgoing links', 'link-library' ); ?>
