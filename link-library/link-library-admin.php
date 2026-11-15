@@ -2017,7 +2017,7 @@ wp_editor( $post->post_content, 'content', $editor_config );
 
 				global $wpdb;
 				
-				$all_link_cats = $wpdb->get_results( $wpdb->prepare( 'SELECT distinct t.name, t.term_id, tt.description FROM %sterms t LEFT JOIN %sterm_taxonomy tt ON (t.term_id = tt.term_id) LEFT JOIN %sterm_relationships tr ON (tt.term_taxonomy_id = tr.term_taxonomy_id) WHERE tt.taxonomy = "link_category" ORDER by t.term_id ASC ', $this->db_prefix(), $this->db_prefix(), $this->db_prefix() ) );
+				$all_link_cats = $wpdb->get_results( $wpdb->prepare( 'SELECT distinct t.name, t.term_id, tt.description FROM %1sterms t LEFT JOIN %1sterm_taxonomy tt ON (t.term_id = tt.term_id) LEFT JOIN %1sterm_relationships tr ON (tt.term_taxonomy_id = tr.term_taxonomy_id) WHERE tt.taxonomy = "link_category" ORDER by t.term_id ASC ', $this->db_prefix(), $this->db_prefix(), $this->db_prefix() ) );
 
 				if ( !empty( $all_link_cats ) ) {
 					$link_cat_items = array();
@@ -2076,7 +2076,7 @@ wp_editor( $post->post_content, 'content', $editor_config );
 		} elseif ( isset( $_POST['deletell59links'] ) ) {
 			global $wpdb;
 
-			$wpdb->get_results( $wpdb->prepare( 'DELETE FROM %slinks ', $this->db_prefix() ) );
+			$wpdb->get_results( $wpdb->prepare( 'DELETE FROM %1slinks ', $this->db_prefix() ) );
 		} elseif ( isset( $_POST['exportgeneralsettings'] ) ) {
 			$upload_dir = wp_upload_dir();
 			if ( is_writable( $upload_dir['path'] ) ) {
@@ -4298,7 +4298,7 @@ function general_custom_fields_meta_box( $data ) {
 						$categorylistarray = explode( ',', $options['categorylist_cpt'] );
 						?>
 						<td>
-							<?php echo wp_kses_post( $this->render_category_list( $top_categories, 'categorylist_cpt', 0, $categorylistarray, $options['direction'] ) ); ?>
+							<?php echo $this->render_category_list( $top_categories, 'categorylist_cpt', 0, $categorylistarray, $options['direction'] ); ?>
 							<?php esc_html_e( 'Show all categories', 'link-library' ); ?>
 							<input type="checkbox" id="nospecificcats" name="nospecificcats" <?php checked( empty( $options['categorylist_cpt'] ) ); ?>/>
 
@@ -4316,7 +4316,7 @@ function general_custom_fields_meta_box( $data ) {
 						$excludecategorylistarray = explode( ',', $options['excludecategorylist_cpt'] );
 						?>
 						<td>
-							<?php echo wp_kses_post( $this->render_category_list( $top_categories, 'excludecategorylist_cpt', 0, $excludecategorylistarray, $options['direction'] ) ); ?><br />
+							<?php echo $this->render_category_list( $top_categories, 'excludecategorylist_cpt', 0, $excludecategorylistarray, $options['direction'] ); ?><br />
 							<?php esc_html_e( 'No Exclusions', 'link-library' ); ?>
 							<input type="checkbox" id="noexclusions" name="noexclusions" <?php checked( empty( $options['excludecategorylist_cpt'] ) ); ?>/>
 						</td>
@@ -4347,7 +4347,7 @@ function general_custom_fields_meta_box( $data ) {
 						$taglistarray = explode( ',', $options['taglist_cpt'] );
 						?>
 						<td>
-							<?php echo wp_kses_post( $this->render_category_list( $top_tags, 'taglist_cpt', 0, $taglistarray, $options['direction'] ) ); ?>
+							<?php echo $this->render_category_list( $top_tags, 'taglist_cpt', 0, $taglistarray, $options['direction'] ); ?>
 							<?php esc_html_e( 'Show all tags', 'link-library' ); ?>
 							<input type="checkbox" id="nospecifictags" name="nospecifictags" <?php checked( empty( $options['taglist_cpt'] ) ); ?>/>
 
@@ -4365,7 +4365,7 @@ function general_custom_fields_meta_box( $data ) {
 						$excludetaglistarray = explode( ',', $options['excludetaglist_cpt'] );
 						?>
 						<td>
-							<?php echo wp_kses_post( $this->render_category_list( $top_tags, 'excludetaglist_cpt', 0, $excludetaglistarray, $options['direction'] ) ); ?><br />
+							<?php echo $this->render_category_list( $top_tags, 'excludetaglist_cpt', 0, $excludetaglistarray, $options['direction'] ); ?><br />
 							<?php esc_html_e( 'No Exclusions', 'link-library' ); ?>
 							<input type="checkbox" id="notagexclusions" name="notagexclusions" <?php checked( empty( $options['excludetaglist_cpt'] ) ); ?>/>
 
@@ -8115,7 +8115,7 @@ function general_custom_fields_meta_box( $data ) {
 
 		echo "<strong>" . esc_html__( 'Duplicate URLs', 'link-library' ) . "</strong><br /><br />";
 
-		$links = $wpdb->get_results( $wpdb->prepare( "SELECT p.ID, p.post_title, pm.meta_value FROM %sposts p, %spostmeta pm INNER JOIN (SELECT trim( TRAILING '/' FROM meta_value ) as trim_link_url FROM %sposts p, %spostmeta pm where pm.post_id = p.ID and pm.meta_key = 'link_url' and p.post_type = 'link_library_links' and p.post_status in ( 'publish', 'pending', 'draft', 'future', 'private' ) GROUP BY meta_value HAVING count(p.ID) > 1) dup ON pm.meta_value = dup.trim_link_url WHERE p.ID = pm.post_id and p.post_type = 'link_library_links' and pm.meta_key = 'link_url' and p.post_status in ( 'publish', 'pending', 'draft', 'future', 'private' )", $ll_admin_class->db_prefix(), $ll_admin_class->db_prefix(), $ll_admin_class->db_prefix(), $ll_admin_class->db_prefix() ) );
+		$links = $wpdb->get_results( $wpdb->prepare( "SELECT p.ID, p.post_title, pm.meta_value FROM %1sposts p, %1spostmeta pm INNER JOIN (SELECT trim( TRAILING '/' FROM meta_value ) as trim_link_url FROM %1sposts p, %1spostmeta pm where pm.post_id = p.ID and pm.meta_key = 'link_url' and p.post_type = 'link_library_links' and p.post_status in ( 'publish', 'pending', 'draft', 'future', 'private' ) GROUP BY meta_value HAVING count(p.ID) > 1) dup ON pm.meta_value = dup.trim_link_url WHERE p.ID = pm.post_id and p.post_type = 'link_library_links' and pm.meta_key = 'link_url' and p.post_status in ( 'publish', 'pending', 'draft', 'future', 'private' )", $ll_admin_class->db_prefix(), $ll_admin_class->db_prefix(), $ll_admin_class->db_prefix(), $ll_admin_class->db_prefix() ) );
 
 		if ( $links ) {
 			foreach ( $links as $link ) {
@@ -8127,7 +8127,7 @@ function general_custom_fields_meta_box( $data ) {
 
 		echo "<br /><br /><strong>" . esc_html__( 'Duplicate Names', 'link-library' ) . "</strong><br /><br />";
 
-		$links  = $wpdb->get_results( $wpdb->prepare( "SELECT p.ID, p.post_title FROM %sposts p INNER JOIN (SELECT trim( TRAILING '/' FROM post_title ) as trim_post_title FROM %sposts p WHERE p.post_type = 'link_library_links' AND p.post_status in ( 'publish', 'pending', 'draft', 'future', 'private' ) GROUP BY post_title HAVING count(p.ID) > 1) dup ON p.post_title = dup.trim_post_title WHERE p.post_type = 'link_library_links' AND p.post_status in ( 'publish', 'pending', 'draft', 'future', 'private' ) ", $ll_admin_class->db_prefix(), $ll_admin_class->db_prefix() ) );
+		$links  = $wpdb->get_results( $wpdb->prepare( "SELECT p.ID, p.post_title FROM %1sposts p INNER JOIN (SELECT trim( TRAILING '/' FROM post_title ) as trim_post_title FROM %1sposts p WHERE p.post_type = 'link_library_links' AND p.post_status in ( 'publish', 'pending', 'draft', 'future', 'private' ) GROUP BY post_title HAVING count(p.ID) > 1) dup ON p.post_title = dup.trim_post_title WHERE p.post_type = 'link_library_links' AND p.post_status in ( 'publish', 'pending', 'draft', 'future', 'private' ) ", $ll_admin_class->db_prefix(), $ll_admin_class->db_prefix() ) );
 
 		if ( $links ) {
 			foreach ( $links as $link ) {
@@ -8150,7 +8150,8 @@ function general_custom_fields_meta_box( $data ) {
 		global $wpdb;  // Kept with CPT update
 		echo "<strong>" . esc_html__( 'Empty Cat Link Checker Report', 'link-library' ) . "</strong><br /><br />";
 
-		$links  = $wpdb->get_results( $wpdb->prepare( "SELECT p.ID, p.post_title, pm.meta_value FROM %sposts p, %spostmeta pm WHERE p.ID = pm.post_id AND p.post_type = 'link_library_links' and p.post_status in ( 'publish', 'pending', 'draft', 'future', 'private' ) and pm.meta_key = 'link_url' AND NOT EXISTS ( SELECT * FROM %sterm_relationships rel JOIN %sterm_taxonomy tax ON tax.term_taxonomy_id = rel.term_taxonomy_id AND tax.taxonomy = %s JOIN %sterms term ON term.term_id = tax.term_id WHERE p.ID = rel.object_id )", $ll_admin_class->db_prefix(), $ll_admin_class->db_prefix(), $ll_admin_class->db_prefix(), $ll_admin_class->db_prefix(), $genoptions['cattaxonomy'], $ll_admin_class->db_prefix() ) );
+		$links_query = $wpdb->prepare( "SELECT p.ID, p.post_title, pm.meta_value FROM %1sposts p, %1spostmeta pm WHERE p.ID = pm.post_id AND p.post_type = 'link_library_links' and p.post_status in ( 'publish', 'pending', 'draft', 'future', 'private' ) and pm.meta_key = 'link_url' AND NOT EXISTS ( SELECT * FROM %1sterm_relationships rel JOIN %1sterm_taxonomy tax ON tax.term_taxonomy_id = rel.term_taxonomy_id AND tax.taxonomy = %s JOIN %1sterms term ON term.term_id = tax.term_id WHERE p.ID = rel.object_id )", $ll_admin_class->db_prefix(), $ll_admin_class->db_prefix(), $ll_admin_class->db_prefix(), $ll_admin_class->db_prefix(), $genoptions['cattaxonomy'], $ll_admin_class->db_prefix() );
+		$links = $wpdb->get_results( $links_query );
 
 		if ( $links ) {
 			foreach ( $links as $link ) {
